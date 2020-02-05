@@ -44,6 +44,8 @@ var
   sTokenEndpoint:String;
   sJwksUri:String;
 begin
+  RESTClient1.ResetToDefaults;
+  RESTRequest1.Method := TRESTRequestMethod.rmGet;
   RESTClient1.BaseURL := edtWellKnown.Text;
   RESTRequest1.Execute;
 
