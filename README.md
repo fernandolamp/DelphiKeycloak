@@ -15,7 +15,7 @@ Example how to get a authentication token from keycloak using openid with grant 
 You can validate the token on jwt.io
 
 
-
+Binary download: https://github.com/fernandolamp/DelphiKeycloak/releases/download/v1.0/DelphiOpenId.exe
 
 
 
