@@ -90,7 +90,7 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="DelphiOpenIdKeyCloak.pas">
+        <DCCReference Include="TPrincipal.pas">
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>

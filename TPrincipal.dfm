@@ -98,7 +98,24 @@ object Form1: TForm1
     TabOrder = 6
     OnClick = CopyTokenClick
   end
+  object Button2: TButton
+    Left = 344
+    Top = 320
+    Width = 75
+    Height = 25
+    Caption = 'Button2'
+    TabOrder = 7
+    OnClick = Button2Click
+  end
+  object edtAcesscode: TEdit
+    Left = 440
+    Top = 319
+    Width = 177
+    Height = 21
+    TabOrder = 8
+  end
   object RESTClient1: TRESTClient
+    Authenticator = OAuth2Authenticator1
     Params = <>
     Left = 24
     Top = 200
@@ -114,5 +131,19 @@ object Form1: TForm1
   object RESTResponse1: TRESTResponse
     Left = 104
     Top = 200
+  end
+  object OAuth2Authenticator1: TOAuth2Authenticator
+    OnAuthenticate = OAuth2Authenticator1Authenticate
+    AccessTokenEndpoint = 
+      'http://localhost:8080/auth/realms/master/protocol/openid-connect' +
+      '/token'
+    AuthCode = 'y0hCuijngkOP5Iq-f8hj4t3GFNeacuqwzGUmBMqikSQ'
+    AuthorizationEndpoint = 
+      'http://localhost:8080/auth/realms/master/protocol/openid-connect' +
+      '/auth'
+    ClientID = 'login-auth'
+    ClientSecret = 'b507c146-5ec8-4911-8ac8-e579ab10d83f'
+    Left = 296
+    Top = 176
   end
 end

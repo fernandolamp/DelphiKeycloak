@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, REST.Types, Data.Bind.Components,
-  Data.Bind.ObjectScope, REST.Client, Vcl.StdCtrls,System.JSON,Vcl.Clipbrd;
+  Data.Bind.ObjectScope, REST.Client, Vcl.StdCtrls,System.JSON,Vcl.Clipbrd,
+  REST.Authenticator.OAuth,system.StrUtils;
 
 type
   TForm1 = class(TForm)
@@ -23,9 +24,17 @@ type
     Label4: TLabel;
     memoToken: TMemo;
     CopyToken: TButton;
+    OAuth2Authenticator1: TOAuth2Authenticator;
+    Button2: TButton;
+    edtAcesscode: TEdit;
     procedure Button1Click(Sender: TObject);
     procedure CopyTokenClick(Sender: TObject);
+    procedure OAuth2Authenticator1Authenticate(ARequest: TCustomRESTRequest;
+      var ADone: Boolean);
+    procedure Button2Click(Sender: TObject);
   private
+    procedure BrowserTitleChanged(const ATitle: string; var DoCloseWebView: boolean);
+    procedure OnRedirect(const AURL: string; var DoCloseWebView : boolean);
     function GetJsonValue(psValue, psJson: String):String;
     { Private declarations }
   public
@@ -37,7 +46,22 @@ var
 
 implementation
 
+uses
+  REST.Authenticator.OAuth.WebForm.Win;
+
 {$R *.dfm}
+
+procedure TForm1.BrowserTitleChanged(const ATitle: string;
+  var DoCloseWebView: boolean);
+begin
+  if (StartsText('Success code', ATitle)) then
+  begin
+    edtAcesscode.Text := Copy(ATitle, 14, Length(ATitle));
+
+    if (edtAcesscode.Text <> '') then
+      DoCloseWebView := TRUE;
+  end;
+end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 var
@@ -70,6 +94,19 @@ begin
   memoToken.Text := RESTRequest1.Response.Content;
 end;
 
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  wv : Tfrm_OAuthWebForm;
+  surl:string;
+begin
+  surl := 'http://localhost:8080/auth/realms/master/protocol/openid-connect/auth?client_id=login-auth&response_type=code';
+
+  wv := Tfrm_OAuthWebForm.Create(self);
+  wv.OnAfterRedirect := OnRedirect;
+  wv.ShowWithURL(surl);
+  //OAuth2Authenticator1.Authenticate();
+end;
+
 procedure TForm1.CopyTokenClick(Sender: TObject);
 begin
   ClipBoard.AsText := GetJsonValue('access_token',memoToken.Text);
@@ -88,6 +125,22 @@ begin
     FreeAndNil(json);
   end;
 
+end;
+
+procedure TForm1.OAuth2Authenticator1Authenticate(ARequest: TCustomRESTRequest;
+  var ADone: Boolean);
+begin
+  showmessage('autenticou');
+end;
+
+procedure TForm1.OnRedirect(const AURL: string; var DoCloseWebView: boolean);
+begin
+// ShowMessage(aurl);
+  if aurl.Contains('code=') then
+  begin
+    edtAcesscode.Text := AURL;
+    DoCloseWebView := true;
+  end;
 end;
 
 end.

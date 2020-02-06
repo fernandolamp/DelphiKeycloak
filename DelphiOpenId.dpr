@@ -2,7 +2,7 @@ program DelphiOpenId;
 
 uses
   Vcl.Forms,
-  DelphiOpenIdKeyCloak in 'DelphiOpenIdKeyCloak.pas' {Form1};
+  TPrincipal in 'TPrincipal.pas' {Form1};
 
 {$R *.res}
 
