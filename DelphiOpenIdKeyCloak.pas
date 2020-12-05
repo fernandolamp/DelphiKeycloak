@@ -1,11 +1,11 @@
-unit TPrincipal;
+unit DelphiOpenIdKeycloak;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, REST.Types, Data.Bind.Components,
-  Data.Bind.ObjectScope, REST.Client, Vcl.StdCtrls,System.JSON,Vcl.Clipbrd;
+  Data.Bind.ObjectScope, REST.Client, Vcl.StdCtrls,System.JSON,Vcl.Clipbrd, IPPeerClient;
 
 type
   TForm1 = class(TForm)
@@ -83,7 +83,7 @@ begin
   json := TJSONObject.Create;
   try
     jsonValue := json.ParseJSONValue(psJson);
-    result := jsonValue.FindValue(psvalue).Value;
+    result := jsonValue.GetValue<String>(psvalue);
   finally
     FreeAndNil(json);
   end;
